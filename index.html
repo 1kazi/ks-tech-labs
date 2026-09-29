@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KS Tech Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#050714;
+    --panel:#10182b;
+    --border:#1f2b45;
+    --text:#e4e9f5;
+    --muted:#8592ad;
+    --coral:#ff3d81;
+    --solar:#ffb020;
+    --cyan:#38e0ff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Sans',sans-serif;
+    background:var(--bg-deep);
+    color:var(--text);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.mono{ font-family:'Space Grotesk',sans-serif; }
+  a{ color:inherit; }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  .stars{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 20%, rgba(255,255,255,.55), transparent),
+      radial-gradient(1.5px 1.5px at 78% 12%, rgba(159,196,255,.5), transparent),
+      radial-gradient(2px 2px at 60% 65%, rgba(255,159,209,.4), transparent),
+      radial-gradient(1px 1px at 30% 80%, rgba(255,226,122,.5), transparent),
+      radial-gradient(1.5px 1.5px at 90% 75%, rgba(159,196,255,.4), transparent),
+      radial-gradient(1px 1px at 45% 40%, rgba(255,255,255,.35), transparent),
+      radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,.3), transparent),
+      radial-gradient(1.5px 1.5px at 85% 40%, rgba(255,159,209,.3), transparent);
+    animation: twinkle 6s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle{ 0%{ opacity:.7; } 100%{ opacity:1; } }
+
+  nav{
+    position:sticky; top:0; z-index:10;
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:960px; margin:0 auto;
+    padding:22px 32px;
+    backdrop-filter: blur(10px);
+    background:linear-gradient(to bottom, rgba(5,7,20,.85), rgba(5,7,20,0));
+  }
+  .mark{ display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; }
+  .mark svg{ width:22px; height:22px; }
+  nav .links{ display:flex; gap:28px; font-size:14px; color:var(--muted); }
+  nav .links a{ text-decoration:none; transition:color .2s; }
+  nav .links a:hover{ color:var(--cyan); }
+
+  header{
+    position:relative; z-index:1;
+    max-width:960px; margin:0 auto;
+    padding:90px 32px 100px;
+  }
+  .eyebrow{
+    color:var(--cyan); font-size:14px; letter-spacing:.04em; margin-bottom:18px;
+    opacity:0; animation: rise .7s ease-out .1s forwards;
+  }
+  h1{
+    font-size:clamp(40px,7vw,74px); font-weight:700; line-height:1.04;
+    background:linear-gradient(100deg, var(--coral) 0%, var(--solar) 45%, var(--cyan) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    max-width:14ch;
+    opacity:0; animation: rise .8s ease-out .25s forwards;
+  }
+  .tagline{
+    margin-top:24px; max-width:54ch; font-size:19px; color:var(--muted);
+    opacity:0; animation: rise .8s ease-out .45s forwards;
+  }
+  @keyframes rise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:translateY(0); } }
+
+  /* scroll reveal */
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  nav .links a{ position:relative; }
+  nav .links a::after{
+    content:""; position:absolute; left:0; bottom:-4px;
+    width:0; height:1px; background:var(--cyan);
+    transition:width .25s ease;
+  }
+  nav .links a:hover::after{ width:100%; }
+
+  main{ position:relative; z-index:1; }
+  section{
+    max-width:960px; margin:0 auto; padding:70px 32px;
+    border-top:1px solid var(--border);
+  }
+  .section-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:26px; }
+  .section-head .idx{ color:var(--muted); font-size:14px; font-family:'Space Grotesk',sans-serif; }
+  section h2{ font-size:28px; font-weight:600; }
+  section p{ max-width:62ch; color:var(--text); font-size:17px; }
+  section p + p{ margin-top:14px; }
+
+  .capabilities{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    margin-top:36px; background:var(--border); border:1px solid var(--border);
+    border-radius:16px; overflow:hidden;
+  }
+  @media (max-width:720px){ .capabilities{ grid-template-columns:1fr; } }
+  .capabilities div{ background:var(--panel); padding:26px 22px; }
+  .capabilities .tag{ font-size:12px; color:var(--solar); letter-spacing:.04em; margin-bottom:10px; }
+  .capabilities .title{ font-size:16px; font-weight:600; margin-bottom:6px; }
+  .capabilities .desc{ font-size:14px; color:var(--muted); }
+
+  .flagship{ display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:center; }
+  @media (max-width:720px){ .flagship{ grid-template-columns:1fr; } }
+  .orb-card{
+    border:1px solid var(--border); border-radius:24px;
+    background:radial-gradient(circle at 30% 30%, #131a3a, var(--panel) 70%);
+    aspect-ratio:1/1; display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+    transition: transform .4s ease, box-shadow .4s ease;
+  }
+  .orb-card:hover{ transform: translateY(-4px); box-shadow: 0 20px 60px -20px rgba(56,224,255,.35); }
+  .orb-card .ring{ position:absolute; border:1px solid rgba(255,255,255,.08); border-radius:50%; }
+  .orb-card .ring.r1{ width:72%; height:72%; }
+  .orb-card .ring.r2{ width:88%; height:88%; }
+  .orb-card .satellite{
+    position:absolute; width:88%; height:88%;
+    animation: orbit 9s linear infinite;
+  }
+  .orb-card .satellite::after{
+    content:""; position:absolute; top:0; left:50%;
+    width:6px; height:6px; margin-left:-3px;
+    border-radius:50%; background:var(--cyan);
+    box-shadow:0 0 12px 2px rgba(56,224,255,.7);
+  }
+  @keyframes orbit{ from{ transform:rotate(0deg); } to{ transform:rotate(360deg); } }
+  .orb-card::before{
+    content:""; position:absolute; width:56%; height:56%; border-radius:26%;
+    transform:rotate(45deg);
+    background:linear-gradient(135deg, var(--coral), var(--solar) 45%, var(--cyan));
+    box-shadow:0 0 70px rgba(56,224,255,.4);
+  }
+  .orb-card span{
+    position:relative; z-index:1; font-family:'Space Grotesk',sans-serif;
+    font-weight:600; font-size:14px; letter-spacing:.05em; color:var(--bg-deep);
+    background:rgba(255,255,255,.92); padding:6px 14px; border-radius:100px;
+  }
+  .flagship-copy .status{
+    display:inline-block; font-size:13px; color:var(--solar);
+    border:1px solid rgba(255,176,32,.4); padding:4px 12px; border-radius:100px; margin-bottom:16px;
+  }
+  .flagship-copy .name{ font-size:27px; font-weight:600; margin-bottom:10px; }
+  .flagship-copy ul{ margin-top:18px; padding-left:0; list-style:none; }
+  .flagship-copy li{ font-size:14px; color:var(--muted); display:flex; align-items:center; gap:10px; padding:6px 0; }
+  .flagship-copy li::before{ content:""; width:5px; height:5px; border-radius:50%; background:var(--cyan); flex-shrink:0; }
+
+  .contact-grid{ display:grid; grid-template-columns:auto 1fr; gap:14px 24px; max-width:520px; margin-top:32px; }
+  .contact-grid dt{ color:var(--muted); font-size:14px; padding-top:2px; }
+  .contact-grid dd{ font-size:16px; }
+  .contact-grid a{ color:var(--cyan); text-decoration:none; }
+  .contact-grid a:hover{ text-decoration:underline; }
+
+  footer{
+    position:relative; z-index:1; max-width:960px; margin:0 auto;
+    padding:40px 32px 80px; border-top:1px solid var(--border);
+    color:var(--muted); font-size:14px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+  footer a:hover{ color:var(--cyan); }
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<nav>
+  <div class="mark">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="40" height="40" rx="10" fill="#10182b"/>
+      <g transform="translate(20,20) rotate(45)">
+        <rect x="-8" y="-8" width="16" height="16" rx="4" fill="url(#g)"/>
+      </g>
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ff3d81"/>
+          <stop offset="50%" stop-color="#ffb020"/>
+          <stop offset="100%" stop-color="#38e0ff"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    KS Tech Labs
+  </div>
+  <div class="links">
+    <a href="#studio">Studio</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<header>
+  <div class="eyebrow mono">Parbhani, Maharashtra &mdash; India</div>
+  <h1>Small studio.<br>Sharp software.</h1>
+  <p class="tagline">KS Tech Labs is an independent software and game studio, building focused mobile experiences from the ground up &mdash; design, code, and release, all in-house.</p>
+</header>
+
+<main>
+
+  <section id="studio" class="reveal">
+    <div class="section-head">
+      <span class="idx mono">01</span>
+      <h2>What we build</h2>
+    </div>
+    <p>We design and develop mobile applications and games with an emphasis on tight, responsive interaction &mdash; the kind of software that feels considered rather than assembled. Every project is built end-to-end: interface, engineering, and the polish that sits between them.</p>
+    <div class="capabilities">
+      <div>
+        <div class="tag mono">PRODUCT</div>
+        <div class="title">Mobile Games</div>
+        <div class="desc">Arcade-style games with fast, readable mechanics and short session design.</div>
+      </div>
+      <div>
+        <div class="tag mono">ENGINEERING</div>
+        <div class="title">Full-Stack Apps</div>
+        <div class="desc">React, React Native, and Node-based products, built and shipped independently.</div>
+      </div>
+      <div>
+        <div class="tag mono">CRAFT</div>
+        <div class="title">Interface Design</div>
+        <div class="desc">Interaction and visual design handled in-house, not outsourced or templated.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="reveal">
+    <div class="section-head">
+      <span class="idx mono">02</span>
+      <h2>Flagship project</h2>
+    </div>
+    <div class="flagship">
+      <div class="orb-card">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="satellite"></div>
+        <span>SOLAR SHIFT</span>
+      </div>
+      <div class="flagship-copy">
+        <div class="status mono">In development</div>
+        <div class="name">Solar Shift</div>
+        <p>A neon arcade reflex game &mdash; match the signal, shift the core, survive the escalating pattern.</p>
+        <ul>
+          <li>Built with React Native &amp; Expo</li>
+          <li>Increasing difficulty, combos, power-ups</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <div class="section-head">
+      <span class="idx mono">03</span>
+      <h2>Contact</h2>
+    </div>
+    <p>For business inquiries, collaboration, or support related to our published apps.</p>
+    <dl class="contact-grid">
+      <dt>Studio</dt>
+      <dd>KS Tech Labs</dd>
+      <dt>Founder</dt>
+      <dd>Kazi Shakerodin Kazi Kalimodin</dd>
+      <dt>Email</dt>
+      <dd><a href="mailto:shakerodink@gmail.com">shakerodink@gmail.com</a></dd>
+      <dt>Location</dt>
+      <dd>Qazi Bag, Darga Road, Parbhani, Maharashtra &ndash; 431401, India</dd>
+    </dl>
+  </section>
+
+</main>
+
+<footer>
+  <span>&copy; 2026 KS Tech Labs</span>
+  <a href="https://1kazi.github.io/solar-shift-privacy-policy/">Privacy Policy</a>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
